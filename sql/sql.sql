@@ -1,13 +1,14 @@
 CREATE DATABASE IF NOT EXISTS webdev;
+
 USE webdev;
 
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE users(
-    id int auto_increment primary key,
-    user_name varchar(50) not null,
-    nick varchar(50) not null unique,
-    email varchar(50) not null unique,
-    user_password  varchar(50) not null unique,
-    created_at timestamp default current_timestamp()
-) ENGINE=INNODB;
+CREATE TABLE users (
+  id INT auto_increment PRIMARY KEY,
+  user_name VARCHAR (50) NOT NULL,
+  nick VARCHAR (50) NOT NULL UNIQUE,
+  email VARCHAR (50) NOT NULL UNIQUE,
+  user_password VARCHAR (50) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ()
+) engine = innodb;
