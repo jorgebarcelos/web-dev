@@ -25,4 +25,4 @@ go.work
 MySql
 
 ## Enviroments Variables ##
-/api/.env
+api/.env
