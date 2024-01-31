@@ -23,3 +23,6 @@ go.work
 # Docker Mysql
 
 MySql
+
+## Enviroments Variables ##
+.env
