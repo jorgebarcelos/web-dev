@@ -8,9 +8,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 )
 
-func CreateUser(w http.ResponseWriter, read *http.Request){
+func CreateUser(w http.ResponseWriter, read *http.Request) {
 	bodyRequest, err := io.ReadAll(read.Body)
 
 	if err != nil {
@@ -21,6 +22,11 @@ func CreateUser(w http.ResponseWriter, read *http.Request){
 	var user models.User
 
 	if err = json.Unmarshal(bodyRequest, &user); err != nil {
+		responses.Err(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err = user.Ready(); err != nil {
 		responses.Err(w, http.StatusBadRequest, err)
 		return
 	}
@@ -45,18 +51,37 @@ func CreateUser(w http.ResponseWriter, read *http.Request){
 
 }
 
-func RetrieveUsers(w http.ResponseWriter, r *http.Request){
-	w.Write([]byte("Buscando usuários"))
+func RetrieveUsers(w http.ResponseWriter, r *http.Request) {
+	nameOrNick := strings.ToLower(r.URL.Query().Get("user"))
+
+	db, err := db.Connect()
+
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repositorie := repositories.NewUsersRepo(db)
+
+	users, err := repositorie.Search(nameOrNick)
+
+	if err != nil {
+		responses.Err(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	responses.JSON(w, http.StatusOK, users)
 }
 
-func RetrieveUser(w http.ResponseWriter, r *http.Request){
+func RetrieveUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Buscando usuário"))
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request){
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Atualizando usuário"))
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request){
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Excluindo usuário"))
 }
