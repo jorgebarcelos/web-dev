@@ -16,8 +16,8 @@ type User struct {
 }
 
 //call Validate  and Format methods
-func (user * User) Ready() error {
-	if err := user.validate(); err != nil {
+func (user * User) Ready(stage string) error {
+	if err := user.validate(stage); err != nil {
 		return err
 	}
 
@@ -26,7 +26,7 @@ func (user * User) Ready() error {
 }
 
 // Verifies if are empty fields
-func (user *User) validate () error {
+func (user *User) validate (stage string) error {
 	if user.UserName == "" {
 		return errors.New("o campo 'nome' não pode estar vazio")
 	}
@@ -39,7 +39,7 @@ func (user *User) validate () error {
 		return errors.New("o campo 'email' não pode estar vazio")
 	}
 
-	if user.UserPassword == "" {
+	if stage  == "register" && user.UserPassword == "" {
 		return errors.New("o campo 'senha' não pode estar vazio")
 	}
 

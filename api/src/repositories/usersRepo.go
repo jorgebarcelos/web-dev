@@ -99,3 +99,21 @@ func (repositorie usersRepo) SearchByID(ID uint64) (models.User, error) {
 	}
 	return user, nil
 }
+
+func (repositorie usersRepo) Update(ID uint64, user models.User) error {
+	statement, err := repositorie.db.Prepare(
+		"update users set user_name = ?, nick = ?, email = ? where id = ? ",
+	)
+
+	if err != nil {
+		return err
+	}
+
+	defer statement.Close()
+
+	if _, err = statement.Exec(user.UserName, user.Nick, user.Email, ID); err != nil {
+		return err
+	}
+
+	return nil
+}
