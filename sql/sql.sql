@@ -9,6 +9,6 @@ CREATE TABLE users (
   user_name VARCHAR (50) NOT NULL,
   nick VARCHAR (50) NOT NULL UNIQUE,
   email VARCHAR (50) NOT NULL UNIQUE,
-  user_password VARCHAR (50) NOT NULL UNIQUE,
+  user_password VARCHAR (50) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ()
 ) engine = innodb;

@@ -6,12 +6,11 @@ import (
 	"fmt"
 )
 
-
 type usersRepo struct {
-	db * sql.DB
+	db *sql.DB
 }
 
-func NewUsersRepo(db * sql.DB) *usersRepo {
+func NewUsersRepo(db *sql.DB) *usersRepo {
 	return &usersRepo{db}
 }
 
@@ -59,10 +58,10 @@ func (repositorie usersRepo) Search(nameOrNick string) ([]models.User, error) {
 		var user models.User
 
 		if err = lines.Scan(
-			&user.ID, 
-			&user.UserName, 
-			&user.Nick, 
-			&user.Email, 
+			&user.ID,
+			&user.UserName,
+			&user.Nick,
+			&user.Email,
 			&user.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -86,7 +85,7 @@ func (repositorie usersRepo) SearchByID(ID uint64) (models.User, error) {
 
 	var user models.User
 
-	if lines.Next(){
+	if lines.Next() {
 		if err = lines.Scan(
 			&user.ID,
 			&user.UserName,
@@ -114,6 +113,17 @@ func (repositorie usersRepo) Update(ID uint64, user models.User) error {
 	if _, err = statement.Exec(user.UserName, user.Nick, user.Email, ID); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (repositorie usersRepo) Delete(ID uint64) error {
+	statement, err := repositorie.db.Prepare("delete from users where id = ?")
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+	if _, err = statement.Exec(ID); err != nil{return err}
 
 	return nil
 }
