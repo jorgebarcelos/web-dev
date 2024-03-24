@@ -9,6 +9,6 @@ require (
 )
 
 require (
-	github.com/badoux/checkmail v1.2.4 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
+	github.com/badoux/checkmail v1.2.4
+	golang.org/x/crypto v0.21.0
 )
